@@ -1,0 +1,40 @@
+callM2=method();
+callM2(String,Boolean) := String=> (command,bQuiet) -> (
+      M2io := openInOut concatenate("!M2 " | " --silent "); 
+     -- M2io := openInOut concatenate("!M2 " );
+        M2io  << command;
+     M2io  << closeOut;
+     result:=get M2io;
+ result
+);
+
+myAdd=method();
+myAdd := (a,b)->
+(
+  a+b
+);
+
+saveResult=(result)->
+(
+ g = openOut "savedResult.M2";
+ g << "result:=" | toExternalString result << ";";
+ g << close;
+);
+
+end
+
+loadPackage("Serialization")
+
+toString myAdd
+serialize myAdd
+toExternalString myAdd
+saveResult=(result)->
+
+break
+
+command:="load(\"callM2.M2\"); result := myAdd(" | toExternalString 5 |","|  toExternalString 5 |"); saveResult(result) ;" 
+command="load(\"callM2.M2\");"
+
+callM2(command,true)
+load "savedResult.M2"
+result

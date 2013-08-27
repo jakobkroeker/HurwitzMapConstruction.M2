@@ -1,0 +1,10 @@
+callM2(String,Boolean) := String=> (command,bQuiet) -> (
+      M2io := openInOut concatenate("!M2" 2>/dev/null");
+        M2io  << command;
+     M2io  << closeOut;
+     result:=get M2io;
+    return result;
+);
+
+
+
